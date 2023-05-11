@@ -28,4 +28,6 @@ public class Interaction {
 
     @Column(nullable = false)
     private int FromToMsg; // if 1 then from student to alumni  && 2 for alumni to student
+    @Column(nullable = false)
+    private  int soft_delete;
 }

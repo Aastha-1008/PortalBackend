@@ -16,14 +16,14 @@ import java.util.List;
 import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://645d761de3289519a8da8457--stellular-sprite-672d15.netlify.app/")
 public class InteractionAlumni {
     @Autowired
     InteractionService interactionService;
     @Autowired
     InteractionRepository interactionRepository;
     @PostMapping("/interactions")
-    public GenericResponse interactions(@RequestParam String FromName,@RequestParam String ToName, @RequestParam String MsgValue ,@RequestParam int FromToMsg){
+    public GenericResponse interactions(@RequestParam String FromName,@RequestParam String ToName, @RequestParam String MsgValue ,@RequestParam int FromToMsg, @RequestParam int SoftDelete){
         Date date = new Date();
         Interaction interaction = new Interaction();
         interaction.setFromName(FromName);
@@ -31,6 +31,7 @@ public class InteractionAlumni {
         interaction.setMsgDate(date);
         interaction.setToName(ToName);
         interaction.setFromToMsg(FromToMsg);
+        interaction.setSoft_delete(SoftDelete);
         interactionRepository.save(interaction);
         return GenericResponse.builder().status(true).statusCode(HttpStatus.OK).msg("fetched data").body(interaction).build();
     }
