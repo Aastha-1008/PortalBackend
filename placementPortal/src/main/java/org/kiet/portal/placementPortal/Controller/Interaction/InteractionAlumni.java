@@ -1,5 +1,7 @@
 package org.kiet.portal.placementPortal.Controller.Interaction;
 
+import org.kiet.portal.placementPortal.UserDetails;
+import org.kiet.portal.placementPortal.entity.ApiLogin;
 import org.kiet.portal.placementPortal.entity.Interaction;
 import org.kiet.portal.placementPortal.entity.MsgDateClass;
 import org.kiet.portal.placementPortal.repository.InteractionRepository;
@@ -16,7 +18,7 @@ import java.util.List;
 import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
 
 @RestController
-@CrossOrigin(origins = "https://645d761de3289519a8da8457--stellular-sprite-672d15.netlify.app/")
+@CrossOrigin(origins = {"https://645d761de3289519a8da8457--stellular-sprite-672d15.netlify.app/","http://localhost:3000"})
 public class InteractionAlumni {
     @Autowired
     InteractionService interactionService;
@@ -33,11 +35,29 @@ public class InteractionAlumni {
         interaction.setFromToMsg(FromToMsg);
         interaction.setSoft_delete(SoftDelete);
         interactionRepository.save(interaction);
-        return GenericResponse.builder().status(true).statusCode(HttpStatus.OK).msg("fetched data").body(interaction).build();
+        return GenericResponse.builder().statusCode(HttpStatus.OK).msg("fetched data").body(interaction).build();
     }
     @GetMapping("/fetchMsg")
     public GenericResponse fetchMsg(@RequestParam String FromName, @RequestParam String ToName){
         List<Interaction> msgDateList = interactionService.fetchMsgs(FromName,ToName);
         return GenericResponse.builder().statusCode(HttpStatus.OK).msg("Successfully Fetched... ").body(msgDateList).build();
+    }
+
+    @GetMapping("/fetchStd")
+    public GenericResponse fetchStd(@RequestParam String ToName){
+        System.out.println(ToName);
+        List<String> names = interactionService.fetchStd(ToName);
+        return GenericResponse.builder().statusCode(HttpStatus.OK).msg("Successfully Fetched...").body(names).build();
+    }
+
+    @PostMapping("api/login/")
+    public GenericResponse apiLogin(@RequestBody UserDetails userDetails){
+        String username = userDetails.getUsername();
+        String password = userDetails.getPassword();
+
+       ApiLogin apiLogin = interactionService.apiLogin(username,password);
+
+        if(apiLogin != null) return GenericResponse.builder().statusCode(HttpStatus.OK).msg("successfully fetched...").body(apiLogin).build();
+        return GenericResponse.builder().statusCode(HttpStatus.OK).msg("problem faced").build();
     }
 }

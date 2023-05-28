@@ -13,4 +13,10 @@ public interface InteractionRepository extends JpaRepository<Interaction,Long> {
             nativeQuery = true
     )
     List<Interaction> fetchMsgs(String FromName, String ToName);
+
+    @Query(
+            value = "SELECT DISTINCT i.from_name FROM interaction i WHERE i.to_name = :ToName",
+            nativeQuery = true
+    )
+    List<String> fetchStd(String ToName);
 }

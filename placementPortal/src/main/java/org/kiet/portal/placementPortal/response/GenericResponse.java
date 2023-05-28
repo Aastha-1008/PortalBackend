@@ -12,6 +12,5 @@ import java.net.http.HttpResponse;
 public class GenericResponse {
     private HttpStatus statusCode;
     private String msg;
-    private boolean status;
     private Object body;
 }
